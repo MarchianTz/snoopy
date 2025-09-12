@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Snoopy Clicker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #cdefff, #fff);
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #snoopy {
+      width: 200px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #snoopy:active {
+      transform: scale(1.1);
+    }
+    #counter {
+      font-size: 2em;
+      margin: 20px 0;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>🐶 Snoopy Clicker</h1>
+  <p>Click Snoopy to earn points!</p>
+  
+  <!-- Replace snoopy.png with your own image -->
+  <img id="snoopy" src="snoopy.png" alt="Snoopy" />
+
+  <div id="counter">0</div>
+
+  <button class="btn" onclick="addPoints(10)">+10</button>
+  <button class="btn" onclick="addPoints(100)">+100</button>
+  <button class="btn" onclick="toggleAuto()">Toggle Auto +1/s</button>
+  <button class="btn" onclick="resetCounter()">Reset</button>
+
+  <script>
+    let count = localStorage.getItem("snoopyClickerCount") 
+                ? parseInt(localStorage.getItem("snoopyClickerCount")) 
+                : 0;
+    let auto = null;
+
+    const counter = document.getElementById("counter");
+    const snoopy = document.getElementById("snoopy");
+
+    function updateDisplay() {
+      counter.textContent = count;
+      localStorage.setItem("snoopyClickerCount", count);
+    }
+
+    function addPoints(num) {
+      count += num;
+      updateDisplay();
+    }
+
+    snoopy.addEventListener("click", () => addPoints(1));
+
+    function resetCounter() {
+      if (confirm("Reset score?")) {
+        count = 0;
+        updateDisplay();
+      }
+    }
+
+    function toggleAuto() {
+      if (auto) {
+        clearInterval(auto);
+        auto = null;
+        alert("Auto stopped");
+      } else {
+        auto = setInterval(() => addPoints(1), 1000);
+        alert("Auto started: +1 every second");
+      }
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
